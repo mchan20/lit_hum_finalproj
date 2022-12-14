@@ -29,10 +29,26 @@ int main()
 	
 	int book = 0;
 	int line = 0;
+
 	//start reading the illiad
+	ofstream test("test.txt", ofstream::out | ofstream::trunc);
 	while (!i.haveAllLinesBeenRead()) {
 		vector<string> v;
 		i.tokenizeLine(v);
+		if (v.size() > 0) {
+			for (auto s : v) {
+				test << s << ' ';
+			}
+			test << endl;
+		}
+	}
+
+	MyFileReader inew("test.txt");
+	while (!inew.haveAllLinesBeenRead()) {
+		vector<string> v;
+		inew.tokenizeLine(v);
+		inew.tokenizeLine(v);
+		inew.tokenizeLine(v);
 		if (v.size() > 0) {
 			line++;
 			for (auto s : v) {
@@ -55,7 +71,8 @@ int main()
 				}
 			}
 		}
-	}	
+	}
+
 
 	vector<vector<string> > store_two;
 	vector<int> aeneid_line_nums;
@@ -65,9 +82,24 @@ int main()
 	book = 0;
 	line = 0;
 
+	ofstream test_two("test.txt", ofstream::out | ofstream::trunc);
 	while (!a.haveAllLinesBeenRead()) {
 		vector<string> v;
 		a.tokenizeLine(v);
+		if (v.size() > 0) {
+			for (auto s : v) {
+				test_two << s << ' ';
+			}
+			test_two << endl;
+		}
+	}
+
+	MyFileReader anew("test.txt");
+	while (!anew.haveAllLinesBeenRead()) {
+		vector<string> v;
+		anew.tokenizeLine(v);
+		anew.tokenizeLine(v);
+		anew.tokenizeLine(v);
 		if (v.size() > 0) {
 			// if vector is certain size, 
 			line++;
@@ -92,10 +124,11 @@ int main()
 			}
 		}
 	}	
+
 	
 	cout << "hi" << endl;
 
-	ofstream il_file("illiad.csv", ofstream::out);
+	ofstream il_file("illiad.csv", ofstream::out | ofstream::trunc);
 	// print out the illiad
 	cout << "ILLIAD" << endl;
 	il_file << "book,line,text" << endl;
@@ -104,7 +137,7 @@ int main()
 		// uncomment for pretty printing;
 		// cout << "[" << setw(2) << illiad_line_nums_books[lineno] << "]" << ' ';
 		// cout << "[" << setw(5) << illiad_line_nums[lineno] << "]";
-		il_file << illiad_line_nums_books[lineno] << ',' << illiad_line_nums[lineno] << ',';
+		il_file << illiad_line_nums_books[lineno] << ',' << illiad_line_nums[lineno]*3 << ',';
 		for (auto l : s) {
 			il_file << l << ' ';
 		}
@@ -112,7 +145,7 @@ int main()
 		lineno++;
 	}
 
-	ofstream an_file("aeneid.csv", ofstream::out);
+	ofstream an_file("aeneid.csv", ofstream::out | ofstream::trunc);
 	// print out the aeneid
 	lineno = 0;
 	cout << "AENEID" << endl;
@@ -121,13 +154,14 @@ int main()
 		// uncomment for pretty printing
 		// cout << "[" << setw(2) << aeneid_line_nums_books[lineno] << "]" << ' ';
 		// cout << "[" << setw(5) << aeneid_line_nums[lineno] << "]";
-		an_file << aeneid_line_nums_books[lineno] << ',' << aeneid_line_nums[lineno] << ',';
+		an_file << aeneid_line_nums_books[lineno] << ',' << aeneid_line_nums[lineno]*3 << ',';
 		for (auto l : s) {
 			an_file << l << ' ';
 		}
 		an_file << endl;
 		lineno++;
 	}
+	
 	/*
 
 	//spell check file
