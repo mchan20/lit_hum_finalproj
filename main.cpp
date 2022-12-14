@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <random>
 #include <utility>
+#include <fstream>
 using namespace std;
 
 #include "bst-2.h"
@@ -24,17 +25,23 @@ int main()
 
 	vector<vector<string> > store;
 	vector<int> illiad_line_nums;
+	vector<int> illiad_line_nums_books;
 	
-	int temp = 0;
+	int book = 0;
+	int line = 0;
 	//start reading the illiad
 	while (!i.haveAllLinesBeenRead()) {
 		vector<string> v;
 		i.tokenizeLine(v);
 		if (v.size() > 0) {
-			temp++;
-			// if vector is certain size, 
+			line++;
 			for (auto s : v) {
-				if (s == "tear" || 
+				if (s == "book")  {
+					book++;
+					line = 0;
+					break;
+				}
+				else if (s == "tear" || 
 					s == "tears" || 
 					s == "weep" || 
 					s == "wept" || 
@@ -42,7 +49,8 @@ int main()
 					s == "grieve" || 
 					s == "grieving")  {
 					store.push_back(v);
-					illiad_line_nums.push_back(temp);
+					illiad_line_nums.push_back(line);
+					illiad_line_nums_books.push_back(book);
 					break;
 				}
 			}
@@ -51,17 +59,25 @@ int main()
 
 	vector<vector<string> > store_two;
 	vector<int> aeneid_line_nums;
+	vector<int> aeneid_line_nums_books;
 	//start reading the aeneid 
 
-	int temp_two = 0;
+	book = 0;
+	line = 0;
+
 	while (!a.haveAllLinesBeenRead()) {
 		vector<string> v;
 		a.tokenizeLine(v);
 		if (v.size() > 0) {
 			// if vector is certain size, 
-			temp_two++;
+			line++;
 			for (auto s : v) {
-				if (s == "tear" || 
+				if (s == "book")  {
+					book++;
+					line = 0;
+					break;
+				}
+				else if (s == "tear" || 
 					s == "tears" || 
 					s == "weep" || 
 					s == "wept" || 
@@ -69,20 +85,47 @@ int main()
 					s == "grieve" || 
 					s == "grieving")  {
 					store_two.push_back(v);
-					aeneid_line_nums.push_back(temp_two);
+					aeneid_line_nums.push_back(line);
+					aeneid_line_nums_books.push_back(book);
 					break;
 				}
 			}
 		}
 	}	
 	
+	cout << "hi" << endl;
+
+	ofstream il_file("illiad.csv", ofstream::out);
+	// print out the illiad
+	cout << "ILLIAD" << endl;
+	il_file << "book,line,text" << endl;
 	int lineno = 0;
 	for (auto s : store) {
-		cout << "[" << setw(5) << illiad_line_nums[lineno] << "]" << ' ';
+		// uncomment for pretty printing;
+		// cout << "[" << setw(2) << illiad_line_nums_books[lineno] << "]" << ' ';
+		// cout << "[" << setw(5) << illiad_line_nums[lineno] << "]";
+		il_file << illiad_line_nums_books[lineno] << ',' << illiad_line_nums[lineno] << ',';
 		for (auto l : s) {
-			cout << l << ' ';
+			il_file << l << ' ';
 		}
-		cout << endl;
+		il_file << endl;
+		lineno++;
+	}
+
+	ofstream an_file("aeneid.csv", ofstream::out);
+	// print out the aeneid
+	lineno = 0;
+	cout << "AENEID" << endl;
+	an_file << "book,line,text" << endl;
+	for (auto s : store_two) {
+		// uncomment for pretty printing
+		// cout << "[" << setw(2) << aeneid_line_nums_books[lineno] << "]" << ' ';
+		// cout << "[" << setw(5) << aeneid_line_nums[lineno] << "]";
+		an_file << aeneid_line_nums_books[lineno] << ',' << aeneid_line_nums[lineno] << ',';
+		for (auto l : s) {
+			an_file << l << ' ';
+		}
+		an_file << endl;
 		lineno++;
 	}
 	/*
