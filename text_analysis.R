@@ -41,20 +41,32 @@ gg.2
 data("stop_words")
 
 search_words <- c("tear", "tears", "weep", "wept", "mourning","grieve", "grieving")
+
 #count most frequent words in illiad around tears
 word_counts_illiad <- illiad %>% unnest_tokens(output = word, input = text) %>%  
   anti_join(stop_words) %>% 
   count(word, sort = TRUE) %>% 
-  filter(n > 2,n < 17) %>% 
-  filter(word %in% )
-  
+  filter(!(word %in% search_words)) %>% 
+  filter(n > 2)
 
-
-ok <- ggplot(word_counts_illiad, aes(x=word,y=n)) + geom_bar(stat="identity") + coord_flip()
+ok <- ggplot(word_counts_illiad, aes(x=word,y=n)) + 
+  ggtitle("Illiad - Analysis of most common words in lines around 'tears'") +
+  geom_bar(stat="identity") + 
+  coord_flip()
 ok
 
 #count most frequent words in aeneid around tears
-text_words <- aeneid %>% unnest_tokens(output = word, input = text)
-data("stop_words")
-text_words  <- text_words  %>% anti_join(stop_words)
-text_wordcounts <- text_words  %>% count(word, sort = TRUE)
+word_counts_aeneid <- aeneid %>% unnest_tokens(output = word, input = text) %>%  
+  anti_join(stop_words) %>% 
+  count(word, sort = TRUE) %>% 
+  filter(!(word %in% search_words)) %>% 
+  filter(n > 2)
+
+ok <- ggplot(word_counts_aeneid, aes(x=word,y=n)) + 
+  ggtitle("Aeneid - Analysis of most common words in lines around 'tears'") +
+  geom_bar(stat="identity") + 
+  coord_flip()
+ok
+
+
+
