@@ -5,13 +5,8 @@
 #include <fstream>
 using namespace std;
 
-#include "bst-2.h"
 #include "myfilereader.h"
 
-void print_node(BST::Node *node)
-{
-    cout << node->get() << " ";
-}
 
 int main()
 {
